@@ -1,45 +1,16 @@
--- Schema para landing page profesional premium pa…
--- Generado por Mateo (Backend & DB Engineer)
-
-CREATE TABLE IF NOT EXISTS items (
-  id SERIAL PRIMARY KEY,
-  nombre VARCHAR(255) NOT NULL,
-  descripcion TEXT,
-  categoria VARCHAR(100),
-  precio NUMERIC(12,2) NOT NULL,
-  precio_descuento NUMERIC(12,2),
-  stock INT DEFAULT 0,
-  unidad VARCHAR(50) DEFAULT 'unidad',
-  imagen_url TEXT,
-  activo BOOLEAN DEFAULT true,
-  creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- Base de Datos para landing page profesional premium pa…
+CREATE TABLE IF NOT EXISTS landing_page_profesional_premium_pa_users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email VARCHAR(255) UNIQUE NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS pedidos (
-  id SERIAL PRIMARY KEY,
-  cliente_nombre VARCHAR(255) NOT NULL,
-  cliente_telefono VARCHAR(50) NOT NULL,
-  cliente_email VARCHAR(255),
-  total NUMERIC(12,2) NOT NULL,
-  estado VARCHAR(50) DEFAULT 'pendiente',
-  items JSONB NOT NULL,
-  notas TEXT,
-  creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS landing_page_profesional_premium_pa_orders (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES landing_page_profesional_premium_pa_users(id),
+  amount_ars NUMERIC(12, 2) NOT NULL,
+  status VARCHAR(50) DEFAULT 'completed',
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS contactos (
-  id SERIAL PRIMARY KEY,
-  nombre VARCHAR(255) NOT NULL,
-  email VARCHAR(255),
-  telefono VARCHAR(50),
-  mensaje TEXT,
-  origen VARCHAR(100) DEFAULT 'web',
-  creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE INDEX idx_items_categoria ON items(categoria);
-CREATE INDEX idx_items_activo ON items(activo);
-CREATE INDEX idx_pedidos_estado ON pedidos(estado);
-CREATE INDEX idx_pedidos_creado ON pedidos(creado_en);
-CREATE INDEX idx_contactos_creado ON contactos(creado_en);
+CREATE INDEX IF NOT EXISTS idx_landing_page_profesional_premium_pa_orders_user ON landing_page_profesional_premium_pa_orders(user_id);
