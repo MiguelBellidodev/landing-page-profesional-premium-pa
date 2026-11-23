@@ -1,0 +1,6 @@
+# Proyecto: landing page profesional premium pa…
+
+- Cliente: Cliente Inaugural
+- Estado: En curso
+
+Carpeta de Obsidian sincronizada automáticamente con la Agencia.
